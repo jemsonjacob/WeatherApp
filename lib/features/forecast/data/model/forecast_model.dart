@@ -14,15 +14,14 @@ class ForecastModel extends Forecast {
 
   factory ForecastModel.fromJson(Map<String, dynamic> json) {
     return ForecastModel(
-      dateTime: json["dt_txt"],
-
+      dateTime: json["dt_txt"] as String,
       temperature: (json["main"]["temp"] as num).toDouble(),
-      feelsLike: json["main"]["feels_like"],
-      humidity: json["main"]["humidity"],
-      windSpeed: json["wind"]["speed"],
-      weatherMain: json["weather"][0]["main"],
-      weatherDescription: json["weather"][0]["description"],
-      iconCode: json["weather"][0]["icon"],
+      feelsLike: (json["main"]["feels_like"] as num).toDouble(),
+      humidity: json["main"]["humidity"] as int,
+      windSpeed: (json["wind"]["speed"] as num).toDouble(),
+      weatherMain: json["weather"][0]["main"] as String,
+      weatherDescription: json["weather"][0]["description"] as String,
+      iconCode: json["weather"][0]["icon"] as String,
     );
   }
 

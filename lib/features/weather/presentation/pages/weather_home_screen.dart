@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:weather/features/forecast/domain/entities/forecast.dart';
 import 'package:weather/features/home/presentation/home_bloc/home_bloc.dart';
 import 'package:weather/features/weather/presentation/widgets/weather_info.dart';
@@ -34,6 +35,9 @@ class _WeatherHomeScreenState extends State<WeatherHomeScreen> {
         if (state is HomeLoaded) {
           final dailyForecast = getDailyForecast(state.forecast);
 
+          DateTime now = DateTime.now();
+          String formattedDate = DateFormat("EEEE, MMMM d, y").format(now);
+
           return Padding(
             padding: EdgeInsets.all(12),
             child: ListView(
@@ -52,7 +56,7 @@ class _WeatherHomeScreenState extends State<WeatherHomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          state.weather.cityName,
+                          '${state.weather.cityName} , ${state.weather.country}',
                           style: const TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
@@ -60,7 +64,7 @@ class _WeatherHomeScreenState extends State<WeatherHomeScreen> {
                         ),
 
                         Text(
-                          state.weather.country,
+                          formattedDate,
                           style: const TextStyle(fontSize: 18),
                         ),
                       ],
@@ -232,8 +236,11 @@ class _WeatherHomeScreenState extends State<WeatherHomeScreen> {
                 children: [
                   Icon(Icons.location_off, size: 80),
 
-                  Text(
-                    "Location permission required, turn on location in your phone's settings",
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Location permission required, turn on location in your phone's settings",
+                    ),
                   ),
 
                   ElevatedButton(
