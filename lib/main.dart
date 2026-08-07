@@ -5,7 +5,7 @@ import 'package:weather/core/theme/theme_cubit.dart';
 import 'package:weather/core/theme/theme_state.dart';
 import 'package:weather/features/weather/presentation/bloc/home_bloc/home_bloc.dart';
 import 'package:weather/features/weather/presentation/bloc/search_bloc/search_weather_bloc.dart';
-import 'package:weather/features/weather/presentation/pages/main_screen.dart';
+import 'package:weather/features/weather/presentation/pages/splash_screen.dart';
 import 'package:weather/injection_container.dart';
 
 Future<void> main() async {
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: state.themeMode,
-            home: const MainScreen(),
+            home: const SplashScreen(),
           );
         },
       ),

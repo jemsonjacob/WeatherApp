@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:weather/features/weather/presentation/bloc/search_bloc/search_weather_bloc.dart';
+import 'package:weather/features/weather/presentation/widgets/weather_icon.dart';
 import 'package:weather/features/weather/presentation/widgets/weather_info_card.dart';
 
 class WeatherSearchScreen extends StatefulWidget {
@@ -19,144 +21,182 @@ class _WeatherSearchScreenState extends State<WeatherSearchScreen> {
     super.dispose();
   }
 
+  void _searchCity() {
+    final city = _cityController.text.trim();
+
+    if (city.isEmpty) return;
+
+    context.read<SearchWeatherBloc>().add(SearchCityEvent(city));
+
+    FocusScope.of(context).unfocus();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: theme.colorScheme.surface,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               TextField(
                 controller: _cityController,
                 textInputAction: TextInputAction.search,
+                onSubmitted: (_) => _searchCity(),
                 decoration: InputDecoration(
                   hintText: "Search city...",
                   prefixIcon: const Icon(Icons.search),
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.send),
+                    onPressed: _searchCity,
+                  ),
                   filled: true,
-                  fillColor: Theme.of(
-                    context,
-                  ).colorScheme.surfaceContainerHighest,
+                  fillColor: theme.colorScheme.surfaceContainerHighest,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide.none,
                   ),
                 ),
-                onSubmitted: (value) {
-                  final city = _cityController.text.trim();
-
-                  if (city.isEmpty) return;
-
-                  context.read<SearchWeatherBloc>().add(
-                    SearchCityEvent(_cityController.text.trim()),
-                  );
-                },
               ),
-              SizedBox(height: 5),
-              Expanded(child: _buildBody()),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildBody() {
-    return BlocBuilder<SearchWeatherBloc, SearchWeatherState>(
-      builder: (context, state) {
-        if (state is SearchWeatherLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (state is SearchWeatherLoaded) {
-          return Padding(
-            padding: EdgeInsets.all(12),
-            child: ListView(
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: Card(
-                    color: Colors.grey,
-                    elevation: 8,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
+              const SizedBox(height: 16),
+
+              Expanded(
+                child: BlocBuilder<SearchWeatherBloc, SearchWeatherState>(
+                  builder: (context, state) {
+                    if (state is SearchWeatherLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    if (state is SearchWeatherError) {
+                      return Center(
+                        child: Text(
+                          state.message,
+                          style: theme.textTheme.titleMedium,
+                        ),
+                      );
+                    }
+
+                    if (state is SearchWeatherLoaded) {
+                      final weather = state.weather;
+
+                      return ListView(
                         children: [
-                          Text(
-                            state.weather.cityName,
-                            style: const TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
+                          Card(
+                            elevation: 4,
+                            color: theme.colorScheme.surfaceContainer,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                          ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(24),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    weather.cityName,
+                                    style: theme.textTheme.headlineMedium
+                                        ?.copyWith(fontWeight: FontWeight.bold),
+                                  ),
 
-                          Text(
-                            state.weather.country,
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.surfaceContainerHighest,
+                                  const SizedBox(height: 4),
+
+                                  Text(
+                                    weather.country,
+                                    style: theme.textTheme.bodyLarge,
+                                  ),
+
+                                  const SizedBox(height: 20),
+
+                                  WeatherIcon(
+                                    iconCode: weather.iconCode,
+                                    size: 120,
+                                  ),
+
+                                  Text(
+                                    "${weather.temperature.round()}°",
+                                    style: theme.textTheme.displayLarge
+                                        ?.copyWith(fontWeight: FontWeight.bold),
+                                  ),
+
+                                  Text(
+                                    weather.weatherMain,
+                                    style: theme.textTheme.titleLarge,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
 
                           const SizedBox(height: 20),
-                          Image.network(
-                            "https://openweathermap.org/img/wn/${state.weather.iconCode}@4x.png",
-                            width: 120,
-                          ),
-                          Text(
-                            "${state.weather.temperature.toStringAsFixed(0)}°",
-                            style: const TextStyle(
-                              fontSize: 70,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
 
+                          Row(
+                            children: [
+                              Expanded(
+                                child: WeatherInfoCard(
+                                  icon: Icons.water_drop,
+                                  title: "Humidity",
+                                  value: "${weather.humidity}%",
+                                ),
+                              ),
+
+                              const SizedBox(width: 10),
+
+                              Expanded(
+                                child: WeatherInfoCard(
+                                  icon: Icons.air,
+                                  title: "Wind",
+                                  value: "${weather.windSpeed} m/s",
+                                ),
+                              ),
+
+                              const SizedBox(width: 10),
+
+                              Expanded(
+                                child: WeatherInfoCard(
+                                  icon: Icons.thermostat,
+                                  title: "Feels Like",
+                                  value: "${weather.feelsLike.round()}°",
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    }
+
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.location_city,
+                            size: 90,
+                            color: theme.colorScheme.primary,
+                          ),
+                          const SizedBox(height: 20),
                           Text(
-                            state.weather.weatherMain,
-                            style: const TextStyle(fontSize: 24),
+                            "Search for a city",
+                            style: theme.textTheme.headlineSmall,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            "Enter a city name to view weather information.",
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.bodyMedium,
                           ),
                         ],
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    WeatherInfoCard(
-                      icon: Icons.water_drop,
-                      title: "Humidity",
-                      value: "${state.weather.humidity}%",
-                    ),
-                    const SizedBox(width: 2),
-                    WeatherInfoCard(
-                      icon: Icons.air,
-                      title: "Wind",
-                      value: "${state.weather.windSpeed}ms",
-                    ),
-                    const SizedBox(width: 2),
-                    WeatherInfoCard(
-                      icon: Icons.emoji_emotions_outlined,
-                      title: "Feels Like",
-                      value: "${state.weather.feelsLike}%",
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        }
-        if (state is SearchWeatherError) {
-          return Center(child: Text(state.message));
-        }
-        return const Center(child: Text("Search for a city"));
-      },
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
