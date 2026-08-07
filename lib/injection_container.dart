@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:weather/core/constants/constants.dart';
 import 'package:weather/core/services/location_service.dart';
+import 'package:weather/core/theme/theme_cubit.dart';
 import 'package:weather/features/forecast/data/datasource/forecast_remote_datasource.dart';
 import 'package:weather/features/forecast/data/repositories/forecast_repository_impl.dart';
 import 'package:weather/features/forecast/domain/repositories/forecast_repository.dart';
@@ -11,8 +12,8 @@ import 'package:weather/features/weather/data/repository_impli/weather_repositor
 import 'package:weather/features/weather/domain/repository/weather_repository.dart';
 import 'package:weather/features/weather/domain/usecases/get_weather_by_coordinates_usecase.dart';
 import 'package:weather/features/weather/domain/usecases/get_weather_by_search_usecase.dart';
-import 'package:weather/features/home/presentation/home_bloc/home_bloc.dart';
-import 'package:weather/features/weather/presentation/bloc/search_weather/search_weather_bloc.dart';
+import 'package:weather/features/weather/presentation/bloc/home_bloc/home_bloc.dart';
+import 'package:weather/features/weather/presentation/bloc/search_bloc/search_weather_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -57,6 +58,8 @@ Future<void> initializeDependencies() async {
   sl.registerFactory<SearchWeatherBloc>(
     () => SearchWeatherBloc(sl<GetCurrentWeatherUseCase>()),
   );
+  //register cubit
+  sl.registerLazySingleton<ThemeCubit>(() => ThemeCubit());
 
   // Forecast datasource
   sl.registerSingleton<ForecastRemoteDataSource>(

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weather/features/home/presentation/home_bloc/home_bloc.dart';
-import 'package:weather/features/weather/presentation/bloc/search_weather/search_weather_bloc.dart';
+import 'package:weather/core/theme/app_theme.dart';
+import 'package:weather/core/theme/theme_cubit.dart';
+import 'package:weather/core/theme/theme_state.dart';
+import 'package:weather/features/weather/presentation/bloc/home_bloc/home_bloc.dart';
+import 'package:weather/features/weather/presentation/bloc/search_bloc/search_weather_bloc.dart';
 import 'package:weather/features/weather/presentation/pages/main_screen.dart';
 import 'package:weather/injection_container.dart';
 
@@ -20,14 +23,18 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<HomeBloc>(create: (_) => sl<HomeBloc>()),
         BlocProvider<SearchWeatherBloc>(create: (_) => sl<SearchWeatherBloc>()),
+        BlocProvider<ThemeCubit>(create: (_) => sl<ThemeCubit>()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Weather',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        ),
-        home: const MainScreen(),
+      child: BlocBuilder<ThemeCubit, ThemeState>(
+        builder: (context, state) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: state.themeMode,
+            home: const MainScreen(),
+          );
+        },
       ),
     );
   }

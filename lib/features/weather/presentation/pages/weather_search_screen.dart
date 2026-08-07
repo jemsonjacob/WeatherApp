@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weather/features/weather/presentation/bloc/search_weather/search_weather_bloc.dart';
-import 'package:weather/features/weather/presentation/widgets/weather_info.dart';
+import 'package:weather/features/weather/presentation/bloc/search_bloc/search_weather_bloc.dart';
+import 'package:weather/features/weather/presentation/widgets/weather_info_card.dart';
 
 class WeatherSearchScreen extends StatefulWidget {
   const WeatherSearchScreen({super.key});
@@ -22,7 +22,7 @@ class _WeatherSearchScreenState extends State<WeatherSearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade100,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -35,7 +35,9 @@ class _WeatherSearchScreenState extends State<WeatherSearchScreen> {
                   hintText: "Search city...",
                   prefixIcon: const Icon(Icons.search),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: Theme.of(
+                    context,
+                  ).colorScheme.surfaceContainerHighest,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide.none,
@@ -93,9 +95,11 @@ class _WeatherSearchScreenState extends State<WeatherSearchScreen> {
 
                           Text(
                             state.weather.country,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 18,
-                              color: Colors.white,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.surfaceContainerHighest,
                             ),
                           ),
 
@@ -125,19 +129,19 @@ class _WeatherSearchScreenState extends State<WeatherSearchScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    weatherInfo(
+                    WeatherInfoCard(
                       icon: Icons.water_drop,
                       title: "Humidity",
                       value: "${state.weather.humidity}%",
                     ),
                     const SizedBox(width: 2),
-                    weatherInfo(
+                    WeatherInfoCard(
                       icon: Icons.air,
                       title: "Wind",
                       value: "${state.weather.windSpeed}ms",
                     ),
                     const SizedBox(width: 2),
-                    weatherInfo(
+                    WeatherInfoCard(
                       icon: Icons.emoji_emotions_outlined,
                       title: "Feels Like",
                       value: "${state.weather.feelsLike}%",
