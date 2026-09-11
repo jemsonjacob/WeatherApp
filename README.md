@@ -1,13 +1,10 @@
 # 🌤️ Weather App
 
-A feature-rich, high-performance Flutter weather application built using **Clean Architecture**, **BLoC Pattern**, **Glassmorphic UI Design System**, and **Dynamic Atmospheric Gradients**.
-
+A feature-rich, high-performance Flutter weather application built using **Clean Architecture**, **BLoC Pattern**.
 ![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?style=for-the-badge&logo=flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-3.x-0175C2?style=for-the-badge&logo=dart&logoColor=white)
 ![BLoC](https://img.shields.io/badge/State_Management-BLoC-546E7A?style=for-the-badge&logo=flutter&logoColor=white)
 ![Architecture](https://img.shields.io/badge/Architecture-Clean_Architecture-4CAF50?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-blue.style=for-the-badge)
-
 ---
 
 ## 📱 Screenshots
