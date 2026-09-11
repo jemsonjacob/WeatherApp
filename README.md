@@ -1,4 +1,4 @@
-# 🌤️ Modern Glassmorphic Weather App
+# 🌤️ Weather App
 
 A feature-rich, high-performance Flutter weather application built using **Clean Architecture**, **BLoC Pattern**, **Glassmorphic UI Design System**, and **Dynamic Atmospheric Gradients**.
 
@@ -13,7 +13,11 @@ A feature-rich, high-performance Flutter weather application built using **Clean
 ## 📱 Screenshots
 
 <p align="center">
-  <img src="assets/screenshots/home_screen.jpg" width="45%" alt="Home Screen Weather View" />
+ <img src="assets/screenshots/splash.jpg" width="45%" alt="" />
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/screenshots/home_screen1.jpg" width="45%" alt="Home Screen Weather View" />
+  &nbsp;&nbsp;&nbsp;&nbsp;
+    <img src="assets/screenshots/home_screen2.jpg" width="45%" alt="Home Screen Weather View" />
   &nbsp;&nbsp;&nbsp;&nbsp;
   <img src="assets/screenshots/search_screen.jpg" width="45%" alt="City Search & Detailed Weather" />
 </p>
@@ -37,36 +41,6 @@ A feature-rich, high-performance Flutter weather application built using **Clean
 
 ---
 
-## 🏗️ Architecture & Project Structure
-
-The project strictly follows **Clean Architecture** principles, separated into **Feature-Based Layers**:
-
-```text
-lib/
-├── core/
-│   ├── constants/        # API Endpoints & Global Constants
-│   ├── db_helper/        # SQLite Database Assistant
-│   ├── services/         # Location & Network Services
-│   ├── theme/            # AppTheme, AppColors, ThemeCubit & ThemeState
-│   ├── usecase/          # Base UseCase Definitions
-│   └── utils/            # Forecast Helpers & Date Formatters
-├── features/
-│   ├── forecast/
-│   │   ├── data/         # Models, Remote Data Source & Repository Implementation
-│   │   ├── domain/       # Entities, Repository Interfaces & Use Cases
-│   └── weather/
-│       ├── data/         # Weather Models, Local/Remote Datasources & Repositories
-│       ├── domain/       # Weather Entity, Failures, & Use Cases
-│       └── presentation/
-│           ├── bloc/     # HomeBloc & SearchWeatherBloc
-│           ├── pages/    # MainScreen, WeatherHomeScreen, SearchScreen, SplashScreen
-│           └── widgets/  # WeatherGlassContainer, Hero Card, Hourly & Daily Lists
-├── features/settings/    # Settings Screen & Theme Toggles
-└── injection_container.dart # Service Locator (GetIt) Dependency Injection
-```
-
----
-
 ## 🛠️ Tech Stack & Packages
 
 | Package | Purpose |
@@ -80,48 +54,3 @@ lib/
 | [`equatable`](https://pub.dev/packages/equatable) | Value Equality Comparison for BLoC States |
 | [`intl`](https://pub.dev/packages/intl) | Date and Time Formatting |
 
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- [Flutter SDK](https://flutter.dev/docs/get-started/install) (`^3.12.0` or higher)
-- [Dart SDK](https://dart.dev/get-dart)
-- An OpenWeatherMap API Key (Get one free at [OpenWeatherMap](https://openweathermap.org/api))
-
-### Installation
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/your-username/weather_app.git
-   cd weather_app
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   flutter pub get
-   ```
-
-3. **Configure Environment Variables**:
-   Create a `.env` file in the project root directory and add your OpenWeatherMap API key:
-   ```env
-   OPENWEATHER_API_KEY=your_api_key_here
-   ```
-
-4. **Run the App**:
-   ```bash
-   flutter run
-   ```
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-<p align="center">
-  Crafted with ❤️ by <b>Jemson Jacob</b>
-</p>

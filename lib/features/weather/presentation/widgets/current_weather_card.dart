@@ -15,7 +15,7 @@ class CurrentWeatherCard extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            height: 130,
+            height: 80,
             child: WeatherIcon(iconCode: weather.iconCode, size: 120),
           ),
           const SizedBox(height: 10),

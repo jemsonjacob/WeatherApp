@@ -28,7 +28,9 @@ class _WeatherHomeScreenState extends State<WeatherHomeScreen> {
     if (state is HomeLoaded) {
       return AppColors.getWeatherGradient(state.weather.weatherMain, isDark);
     }
-    return isDark ? AppColors.defaultNightGradient : AppColors.defaultDayGradient;
+    return isDark
+        ? AppColors.defaultNightGradient
+        : AppColors.defaultDayGradient;
   }
 
   @override
@@ -48,7 +50,7 @@ class _WeatherHomeScreenState extends State<WeatherHomeScreen> {
             ),
           ),
           child: Scaffold(
-            backgroundColor: Colors.transparent,
+            backgroundColor: AppColors.defaultDayGradient[1],
             body: Builder(
               builder: (context) {
                 switch (state) {

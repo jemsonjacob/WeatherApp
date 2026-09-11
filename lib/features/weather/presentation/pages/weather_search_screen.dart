@@ -190,13 +190,13 @@ class _WeatherSearchScreenState extends State<WeatherSearchScreen> {
                         return ListView(
                           children: [
                             WeatherContainer(
-                              padding: const EdgeInsets.all(24),
+                              padding: const EdgeInsets.all(16),
                               child: Column(
                                 children: [
                                   Text(
                                     weather.cityName,
                                     style: const TextStyle(
-                                      fontSize: 32,
+                                      fontSize: 28,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
                                     ),
@@ -205,21 +205,21 @@ class _WeatherSearchScreenState extends State<WeatherSearchScreen> {
                                   Text(
                                     weather.country,
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       color: Colors.white.withValues(
                                         alpha: 0.8,
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(height: 16),
+                                  const SizedBox(height: 12),
                                   WeatherIcon(
                                     iconCode: weather.iconCode,
-                                    size: 110,
+                                    size: 90,
                                   ),
                                   Text(
                                     "${weather.temperature.round()}°C",
                                     style: const TextStyle(
-                                      fontSize: 64,
+                                      fontSize: 50,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
                                     ),

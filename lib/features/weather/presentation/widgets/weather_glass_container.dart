@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:weather/core/theme/app_colors.dart';
 
@@ -16,7 +15,7 @@ class WeatherContainer extends StatelessWidget {
   const WeatherContainer({
     super.key,
     required this.child,
-    this.borderRadius = 24.0,
+    this.borderRadius = 15.0,
     this.padding,
     this.margin,
     this.blur = 15.0,
@@ -58,18 +57,15 @@ class WeatherContainer extends StatelessWidget {
 
     Widget content = ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
-        child: Container(
-          padding: padding ?? const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: defaultColor,
-            borderRadius: BorderRadius.circular(borderRadius),
-            border: defaultBorder,
-            boxShadow: defaultShadow,
-          ),
-          child: child,
+      child: Container(
+        padding: padding ?? const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: defaultColor,
+          borderRadius: BorderRadius.circular(borderRadius),
+          border: defaultBorder,
+          boxShadow: defaultShadow,
         ),
+        child: child,
       ),
     );
 
