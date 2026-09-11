@@ -32,13 +32,25 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeEvent event,
     Emitter<HomeState> emit,
   ) async {
-    emit(HomeLoading());
+    final currentState = state;
+
+    if (currentState is! HomeLoaded) {
+      emit(HomeLoading());
+    }
 
     try {
       // Get current location
       final position = await getLocationUseCase();
 
-      // Fetch current weather
+      if (currentState is HomeLoaded) {
+        // If loc got changed
+        final isLocationChanged = currentState.weather.cityName.isEmpty;
+        if (isLocationChanged) {
+          emit(HomeLoading());
+        }
+      }
+
+      //current weather
       final weatherResult = await getWeatherByCoordinatesUseCase(
         CoordinatesParams(
           latitude: position.latitude,
@@ -67,6 +79,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       );
 
       if (weatherFailure != null) {
+        if (currentState is HomeLoaded) {
+          // Keep displaying current weather if fetch fails while refreshing
+          return;
+        }
+
         if (weatherFailure is NetworkFailure) {
           emit(const HomeError(message: "No Internet Connection"));
         } else if (weatherFailure is ServerFailure) {
@@ -88,20 +105,44 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       if (forecastFailure != null) {
         if (forecastFailure is NetworkFailure) {
-          emit(const HomeError(message: "No Internet Connection"));
-        } else if (forecastFailure is ServerFailure) {
-          emit(const HomeError(message: "Server Error"));
-        } else {
-          emit(const HomeError(message: "Something went wrong"));
+          // Weather from db
+          if (weather != null) {
+            emit(HomeLoaded(weather: weather!, forecast: const []));
+            return;
+          }
+
+          if (currentState is! HomeLoaded) {
+            emit(const HomeError(message: "No Internet Connection"));
+          }
+          return;
+        }
+
+        if (currentState is! HomeLoaded) {
+          if (forecastFailure is ServerFailure) {
+            emit(const HomeError(message: "Server Error"));
+          } else {
+            emit(const HomeError(message: "Something went wrong"));
+          }
         }
         return;
+      }
+
+      // If location changed from previous loaded weather, emit loading
+      if (currentState is HomeLoaded &&
+          currentState.weather.cityName.isNotEmpty &&
+          weather != null &&
+          currentState.weather.cityName.toLowerCase() !=
+              weather!.cityName.toLowerCase()) {
+        emit(HomeLoading());
       }
 
       // Both succeeded
       emit(HomeLoaded(weather: weather!, forecast: forecasts!));
     } catch (e) {
       debugPrint(e.toString());
-      emit(LocationPermissionDenied());
+      if (currentState is! HomeLoaded) {
+        emit(LocationPermissionDenied());
+      }
     }
   }
 }

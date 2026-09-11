@@ -23,27 +23,38 @@ class WeatherContent extends StatelessWidget {
 
     return SafeArea(
       child: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
         children: [
           WeatherHeader(weather: state.weather),
-          const SizedBox(height: 20),
+          const SizedBox(height: 18),
           CurrentWeatherCard(weather: state.weather),
-          const SizedBox(height: 20),
+          const SizedBox(height: 18),
           WeatherInfoGrid(weather: state.weather),
-          const SizedBox(height: 25),
+          const SizedBox(height: 24),
           const Text(
             "Hourly Forecast",
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              letterSpacing: 0.3,
+            ),
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 14),
           HourlyForecastList(forecast: state.forecast),
-          const SizedBox(height: 25),
+          const SizedBox(height: 24),
           const Text(
             "5-Day Forecast",
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              letterSpacing: 0.3,
+            ),
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 14),
           DailyForecastList(forecast: dailyForecast),
+          const SizedBox(height: 20),
         ],
       ),
     );

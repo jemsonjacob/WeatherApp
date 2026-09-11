@@ -1,8 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dartz/dartz.dart';
 import 'package:geolocator/geolocator.dart';
-
 import 'package:weather/core/services/location_service.dart';
+import 'package:weather/features/weather/data/datasource/remote/weather_local_datasource.dart';
 import 'package:weather/features/weather/data/datasource/remote/weather_remote_datasource.dart';
 import 'package:weather/features/weather/data/exceptions/exceptions.dart';
 import 'package:weather/features/weather/domain/entities/weather.dart';
@@ -12,9 +11,11 @@ import 'package:weather/features/weather/domain/repository/weather_repository.da
 class WeatherRepositoryImpl implements WeatherRepository {
   final WeatherRemoteDataSource remoteDataSource;
   final LocationService locationService;
+  final WeatherLocalDataSource localDataSource;
   WeatherRepositoryImpl({
     required this.remoteDataSource,
     required this.locationService,
+    required this.localDataSource,
   });
 
   @override
@@ -46,12 +47,22 @@ class WeatherRepositoryImpl implements WeatherRepository {
         latitude: latitude,
         longitude: longitude,
       );
-
+      //  print('Saving weather to SQLite');
+      await localDataSource.cacheWeather(weather);
+      // print('Weather saved to SQLite');
       return Right(weather);
-    } on ServerException {
-      return Left(ServerFailure());
     } on NetworkException {
-      return Left(NetworkFailure());
+      final cachedWeather = await localDataSource.getCachedWeather();
+
+      if (cachedWeather != null) {
+        // print('Cached weather found');
+        return Right(cachedWeather);
+      }
+      //  print('No cached weather found');
+      return Left(const NetworkFailure());
+    } on ServerException {
+      // print(' ServerException');
+      return Left(const ServerFailure());
     }
   }
 }

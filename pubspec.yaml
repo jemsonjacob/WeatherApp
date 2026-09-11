@@ -49,6 +49,11 @@ dependencies:
   permission_handler: ^12.0.3
   internet_connection_checker_plus:
   lottie: ^3.5.1
+  sqflite: ^2.4.3
+  path: ^1.9.1
+  flutter_launcher_icons: ^0.14.4
+  flutter_snake_navigationbar: ^0.6.1
+
  
 
 dev_dependencies:
@@ -77,6 +82,7 @@ flutter:
   assets:
     - assets/
     - assets/animation/
+    - assets/screenshots/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
