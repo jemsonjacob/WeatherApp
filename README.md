@@ -23,7 +23,7 @@ A feature-rich, high-performance Flutter weather application built using **Clean
 
 ## ✨ Features
 
-- 📊 **2x2 Weather Metrics Grid**: Real-time data for **Humidity**, **Feels Like**, **Wind Speed**, and **Condition** with custom icon badges.
+- 📊 Real-time data for **Humidity**, **Feels Like**, **Wind Speed**, and **Condition** with custom icon badges.
 - ⏰ **Hourly Forecast & 5-Day Forecast**:
   - Horizontally scrollable frosted glass pills with an active glowing border for the current hour.
   - 5-Day forecast cards displaying day names, weather condition pills, and temperature badges.
